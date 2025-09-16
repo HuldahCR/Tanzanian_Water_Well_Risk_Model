@@ -1,212 +1,167 @@
-\# 💧 Tanzanian Water Wells Functionality Prediction  
+# 💧 Tanzanian Water Well Functionality Prediction - Phase Three Data Science Project
 
+## 📁 1. Project Overview
 
+This project focuses on analyzing and modeling the functionality of water wells in **Tanzania**. 
+The dataset captures key features related to the **condition, installation, management, and 
+geographical attributes** of wells. The goal is to create predictive models that help identify 
+non-functional or at-risk wells, supporting **government agencies, NGOs, and water resource managers** 
+in better targeting interventions.
 
-\## 📌 Project Overview  
-
-Access to clean and safe water is critical for rural Tanzanian communities. Yet, many water wells fail or require frequent repairs, leaving thousands without reliable access.  
-
-
-
-This project applies \*\*machine learning\*\* to predict the functionality of water wells, enabling NGOs, government agencies, and donors to \*\*prioritize repairs and allocate resources efficiently\*\*.  
-
-
-
-The task is a \*\*multi-class classification problem\*\*:  
-
-\- \*\*Functional\*\*  
-
-\- \*\*Functional Needs Repair\*\*  
-
-\- \*\*Non Functional\*\*
-
-
+The project follows the **CRISP-DM methodology** and leverages **predictive analytics** to 
+generate actionable insights that can enhance water accessibility and sustainability across communities.
 
 ---
 
+## 🧠 2. Business Understanding
 
-
-\## 🎯 Objectives  
-
-\- ✅ Predict the functionality status of Tanzanian water wells.  
-
-\- ✅ Identify geospatial and operational patterns of well failure.  
-
-\- ✅ Provide interpretable feature importance to guide decision-making.  
-
-\- ✅ Support proactive maintenance to \*\*reduce costs by ~20%\*\* and ensure reliable access.  
-
-
+- **Client/Context**: Tanzanian government agencies, NGOs, and water sustainability programs
+- **Objective**: Predict the operational status of water wells to improve maintenance planning, 
+  reduce downtime, and allocate resources effectively
+- **Problem Statement**: A large percentage of wells in Tanzania are non-functional, leading to 
+  wasted investments and water scarcity for communities
+- **Metrics of Success**:
+  - Achieve high **accuracy, recall, and F1-score** in predicting well functionality
+  - Identify the **top contributing factors** affecting well sustainability
+  - Provide clear **recommendations** for prioritizing repairs and installations
 
 ---
 
+## 📊 3. Data Understanding
 
-
-\## 📂 Dataset  
-
-Data provided by \*\*Taarifa + Tanzanian Ministry of Water\*\*, covering ~59,400 wells.  
-
-
-
-\- \*\*Features\*\*: geospatial (longitude, latitude, gps\_height), operational (funder, installer, management, payment), and technical details (pump type, water source).  
-
-\- \*\*Target\*\*: `status\_group` (Functional / Needs Repair / Non Functional).  
-
-\- Data split into:  
-
-&nbsp; - \*\*Train set\*\* (with labels)  
-
-&nbsp; - \*\*Test set\*\* (unlabeled, used for predictions)  
-
-
+- **Source**: [Tanzania Water Wells Dataset (Taarifa / DrivenData)](https://www.drivendata.org/competitions/7/pump-it-up-data-mining-the-water-table/)
+- **Description**:
+  - The dataset contains ~59,000 records of water wells across Tanzania
+  - Features include `funder`, `installer`, `gps_height`, `population`, `construction_year`, 
+    `water_quality`, `quantity`, `source_type`, `management`, `payment`, `region`, and more
+  - Target variable: `status_group` (functional, non-functional, functional needs repair)
 
 ---
 
+## 🧹 4. Data Cleaning and Preparation
 
+- Imputed missing values for key categorical and numerical columns
+- Bucketed funders and installers to reduce high cardinality issues
+- Converted date fields to appropriate datetime formats
+- Engineered new features such as:
+  - `age_years` = Current year – `construction_year`
+  - Log transformations on skewed variables (`amount_tsh`, `population`)
+- Removed duplicates and obvious data entry errors
+- Encoded categorical variables using one-hot encoding
 
-\## 🛠️ Methodology  
-
-
-
-We used the \*\*CRISP-DM Framework\*\*:  
-
-
-
-1\. \*\*Business Understanding\*\* – Address water scarcity \& infrastructure reliability.  
-
-2\. \*\*Data Understanding\*\* – Explore geospatial and operational drivers of well failure.  
-
-3\. \*\*Data Preparation\*\* – Cleaning, imputation, one-hot encoding, feature engineering (e.g., `population\_log`, `amount\_tsh\_log`, `age\_years`).  
-
-4\. \*\*Modeling\*\* – Tested multiple models:  
-
-&nbsp;  - Logistic Regression (baseline)  
-
-&nbsp;  - Random Forest  
-
-&nbsp;  - Gradient Boosting Classifier  
-
-&nbsp;  - Support Vector Machine (SVM)  
-
-&nbsp;  - \*\*XGBoost (final choice)\*\*  
-
-5\. \*\*Evaluation\*\* – Accuracy, Precision, Recall, F1-score, and ROC-AUC.  
-
-6\. \*\*Deployment Preparation\*\* – Predictions generated for the unlabeled test dataset.  
-
-
+**Key Fields Used**:  
+`funder`, `installer`, `gps_height`, `population`, `amount_tsh`, `age_years`, `region`, 
+`water_quality`, `extraction_type`, `management`, `payment`, `source_type`, `status_group`
 
 ---
 
+## 🧪 5. Methodology: CRISP-DM
 
-
-\## 📊 Results \& Insights  
-
-
-
-\### ✅ Best Model: \*\*Tuned XGBoost with Threshold Adjustment\*\*  
-
-\- \*\*Validation Accuracy\*\*: ~74%  
-
-\- \*\*Macro F1-Score\*\*: 0.66  
-
-\- \*\*ROC-AUC (macro)\*\*: 0.883  
-
-
-
-\### 🔑 Key Findings  
-
-\- \*\*Most Important Features\*\*:  
-
-&nbsp; - Waterpoint type  
-
-&nbsp; - Quantity group (enough / insufficient / seasonal)  
-
-&nbsp; - Funder \& Installer (accountability effect)  
-
-&nbsp; - Region zone \& basin (geospatial risks)  
-
-&nbsp; - GPS height (elevation effects)  
-
-\- \*\*Geospatial clustering\*\* shows high failure rates in regions like \*\*Dodoma, Tabora, and Singida\*\*.  
-
-\- \*\*Threshold tuning\*\* reduced \*\*false positives\*\*, ensuring fewer failing wells are misclassified as functional.  
-
-
+1. **Business Understanding**: Define objectives (predict well functionality, allocate resources)
+2. **Data Understanding**: Explore data distribution, missing values, and correlations
+3. **Data Preparation**: Cleaning, feature engineering, encoding
+4. **EDA**:
+   - Univariate, bivariate, and multivariate analysis
+   - Geographic distribution of well functionality
+   - Relationships between funder/installer and failure rates
+5. **Modeling**:
+   - Logistic Regression, Random Forest, XGBoost
+   - Hyperparameter tuning with GridSearchCV
+6. **Evaluation**:
+   - Performance measured with Accuracy, Precision, Recall, F1-score, ROC-AUC
+   - Confusion matrices to evaluate misclassifications
 
 ---
 
+## 📈 6. Visualizations
 
+- Distribution of well status across regions
+- Population served vs. functionality
+- Top funders/installers and their respective failure rates
+- Feature importance plots from Random Forest / XGBoost
+- Geospatial heatmaps of non-functional wells
 
-\## 💡 Business Recommendations  
-
-
-
-1\. \*\*Preventive Maintenance\*\*  
-
-&nbsp;  - Prioritize wells predicted as \*“Needs Repair”\* to avoid costly breakdowns.  
-
-
-
-2\. \*\*Target High-Risk Regions\*\*  
-
-&nbsp;  - Deploy regional maintenance teams where non-functionality is clustered.  
-
-
-
-3\. \*\*Strengthen Management\*\*  
-
-&nbsp;  - Support and monitor local funders/installers with higher failure rates.  
-
-
-
-4\. \*\*Resource Allocation\*\*  
-
-&nbsp;  - Drill new wells in \*\*overburdened areas\*\* where population per well is unsustainable.  
-
-
-
-5\. \*\*Policy Integration\*\*  
-
-&nbsp;  - Use predictions with \*\*GIS dashboards\*\* to guide donor investments and government planning.  
-
-
+> Visuals are included in the Jupyter Notebook and Presentation Deck.
 
 ---
 
+## 📊 7. Key Findings
 
-
-\## ⚠️ Limitations  
-
-\- \*\*Data Imbalance\*\* → “Needs Repair” wells underrepresented.  
-
-\- \*\*Data Quality\*\* → Some funder/installer names remain noisy.  
-
-\- \*\*Temporal Drift\*\* → Future changes (climate, infrastructure) may reduce model reliability.  
-
-
+- **High failure rates** are associated with wells installed by lesser-known funders/contractors
+- **Population and gps_height** significantly influence well sustainability
+- Wells with **unreliable water quality and low quantity** are more likely to be non-functional
+- **Payment and management structures** strongly correlate with operational success
+- **Older wells** (constructed >20 years ago) have higher non-functionality rates
 
 ---
 
+## 💡 8. Prescriptive Recommendations
 
-
-\## 🔮 Next Steps  
-
-\- 🎯 \*\*Hyperparameter Tuning\*\* → further refine model performance.  
-
-\- 🎯 \*\*Cost-Sensitive Learning\*\* → penalize misclassification of non-functional wells.  
-
-\- 🎯 \*\*Geospatial Visualization Dashboard\*\* → map high-risk wells for NGOs and governments.  
-
-\- 🎯 \*\*Deployment\*\* → package the final model into an interactive tool.  
-
-
+1. **Prioritize repairs** for wells in high-population areas to maximize impact
+2. **Focus on funder/installer quality control** by investing in top-performing organizations
+3. **Promote sustainable management models** with community contributions for maintenance
+4. Use predictive modeling to **pre-emptively flag at-risk wells** before breakdown
+5. Encourage replacement/rehabilitation of **aging infrastructure**
 
 ---
 
+## 📦 9. Deliverables
 
+- ✅ **Jupyter Notebook** with EDA, feature engineering, and model building
+- ✅ **Cleaned dataset** for analysis
+- ✅ **Presentation slides** for stakeholders
+- ✅ **README.md** (this file)
 
-\## 📦 Repository Structure  
+---
 
+## 📎 10. Repository Structure
 
+```bash
+tanzania-water-well-analysis/
+│
+├── data/
+│   ├── raw/                  # Original dataset
+│   └── processed/            # Cleaned and engineered dataset
+│
+├── notebooks/
+│   └── Tanzanian_Water_Well_Modeling.ipynb # Main notebook
+│
+├── presentation/
+│   └── presentation.pdf      # Stakeholder presentation
+│
+├── models/
+│   └── best_model.pkl        # Saved trained model
+│
+├── README.md
+├── .gitignore
+```
 
+---
+
+## 🛠 11. Tools & Technologies
+
+- Python (Pandas, NumPy, Matplotlib, Seaborn)
+- Scikit-learn, XGBoost
+- Jupyter Notebook
+- CRISP-DM methodology
+
+---
+
+## 👤 12. Author
+
+**Huldah Chepkoech Rotich**  
+Data Science Student | Moringa School  
+*This project is part of Phase 3 Presentation for Moringa’s Data Science Program.*
+
+---
+
+## 📬 Contact
+
+For feedback or questions, please email: rotichhuldah@gmail.com  
+Or connect via [LinkedIn](https://www.linkedin.com/in/huldah-rotich-339797181/)
+
+---
+
+## 📝 License
+
+This project is for educational purposes and not intended for production-grade use or regulatory decision-making.
